@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Carnet Vietnam 2026</title>
+<style>
+:root{--bg:#fdf6ec;--card:#fff;--txt:#2d2a26;--mut:#8a8178}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);padding-bottom:50px}
+.hero{background:linear-gradient(135deg,#f59e0b,#ef4444 60%,#be185d);color:#fff;padding:26px 18px 20px;text-align:center;border-radius:0 0 28px 28px;box-shadow:0 6px 18px rgba(0,0,0,.15)}
+.hero .big{font-size:2.8rem}
+.hero h1{margin:6px 0 4px;font-size:1.4rem}
+.hero .sub{opacity:.92;font-size:.85rem}
+.cd{display:inline-block;margin-top:12px;background:rgba(255,255,255,.22);padding:6px 16px;border-radius:20px;font-weight:600;font-size:.9rem}
+.bar{margin:12px auto 0;max-width:300px;height:8px;background:rgba(255,255,255,.3);border-radius:8px;overflow:hidden}
+.bar div{height:100%;background:#fff;width:0;transition:width .4s}
+.barl{font-size:.8rem;margin-top:6px}
+.tabs{display:flex;gap:8px;padding:14px 16px 4px;overflow-x:auto}
+.tab{padding:9px 16px;border-radius:22px;background:#fff;color:var(--mut);font-size:.9rem;white-space:nowrap;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.06);border:0}
+.tab.on{background:#ef4444;color:#fff;font-weight:700}
+main{padding:8px 16px}
+.day{margin:16px 0;border-radius:20px;overflow:hidden;background:var(--card);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.day.today{outline:3px solid #22c55e}
+.dh{padding:14px 16px;color:#fff;display:flex;align-items:center;gap:12px}
+.dh .ico{font-size:2.2rem}
+.dh .dt{font-size:.78rem;opacity:.92;text-transform:uppercase;letter-spacing:.5px}
+.dh h2{margin:2px 0 0;font-size:1.1rem}
+.badge{margin-left:auto;background:#22c55e;color:#fff;font-size:.7rem;padding:3px 9px;border-radius:12px;font-weight:700}
+.db{padding:6px 12px 12px}
+.it{display:flex;align-items:flex-start;gap:10px;padding:10px 4px;border-bottom:1px solid #f1ebe2}
+.it:last-child{border-bottom:0}
+.it .ti{font-size:1.4rem;width:30px;text-align:center}
+.it .tx{flex:1;font-size:.92rem;line-height:1.35}
+.it .nt{display:block;color:var(--mut);font-size:.78rem;margin-top:2px}
+.it input{width:22px;height:22px;accent-color:#22c55e;margin-top:3px}
+.it.done .tx{opacity:.45;text-decoration:line-through}
+.box{background:#fff;border-radius:16px;padding:14px;margin:14px 0;box-shadow:0 3px 10px rgba(0,0,0,.07)}
+.box h3{margin:0 0 8px;font-size:1.05rem}
+.box li{margin:5px 0;font-size:.9rem;line-height:1.4}
+.box ul{padding-left:18px;margin:0}
+table{width:100%;border-collapse:collapse;font-size:.88rem}
+td{padding:7px 4px;border-bottom:1px solid #f1ebe2}
+td:last-child{text-align:right;font-weight:600}
+tr.tot td{border-top:2px solid #ef4444;font-weight:800;border-bottom:0}
+.warn{background:#fff7e0;border-left:5px solid #f59e0b}
+.note{font-size:.8rem;color:var(--mut);text-align:center;margin:22px 16px}
+button.rs{display:block;margin:10px auto;padding:9px 18px;border:0;border-radius:20px;background:#eee;color:#555;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="hero">
+<div class="big">🇻🇳</div>
+<h1>Vietnam 2026</h1>
+<div class="sub">11 nov → 1er déc · Đà Nẵng · Huế · Hội An</div>
+<div class="cd" id="cd"></div>
+<div class="bar"><div id="bf"></div></div>
+<div class="barl" id="bl"></div>
+</div>
+<div class="tabs" id="tabs"></div>
+<main id="main"></main>
+<p class="note">Les coches sont sauvegardées sur ton téléphone.</p>
+<script>
+const Y=2026,M=10;
+const D=(d,m)=>new Date(Y,m===undefined?M:m,d);
+const JOURS=["Dim","Lun","Mar","Mer","Jeu","Ven","Sam"];
+const MOIS=["jan","fév","mars","avr","mai","juin","juil","août","sept","oct","nov","déc"];
+const C={da:"linear-gradient(90deg,#0ea5e9,#2563eb)",hue:"linear-gradient(90deg,#8b5cf6,#6d28d9)",ha:"linear-gradient(90deg,#f59e0b,#ea580c)",fete:"linear-gradient(90deg,#ec4899,#be185d)",rep:"linear-gradient(90deg,#14b8a6,#0f766e)",lib:"linear-gradient(90deg,#64748b,#334155)",vol:"linear-gradient(90deg,#475569,#1e293b)"};
+
+const DAYS=[
+{s:D(11),e:D(12),c:"da",ico:"🏖️",t:"Đà Nẵng : décompression",it:[
+["🏖️","Plage Mỹ Khê"],["🛍️","Marchés Han et Con"],["👓","Commander les lunettes dès le 11-12","Délai de 1 à 3 jours"]]},
+{s:D(13),e:D(13),c:"hue",ico:"🏯",t:"Huế : jour 1",it:[
+["🚆","Train panoramique le matin","Place côté droit (mer, col Hải Vân)"],["🏯","Cité impériale","Environ 3 h"],["🚶","Rue piétonne"],["🍜","Dîner : bún bò Huế, bánh bèo, bánh khoái"]]},
+{s:D(14),e:D(14),c:"hue",ico:"⛩️",t:"Huế : jour 2",it:[
+["🕌","Tombeaux de Khải Định et Tự Đức"],["🛕","Pagode Thiên Mụ"],["🐉","Option : bateau-dragon sur la rivière des Parfums"],["🏔️","Retour par le col de Hải Vân","Easy rider ou voiture privée (40-70 €), arrêts à Lăng Cô et au sommet"]]},
+{s:D(15),e:D(17),c:"rep",ico:"☕",t:"Đà Nẵng : chill",it:[
+["☕","Cafés : cà phê muối, cà phê trứng"],["🏖️","Plage et massages"],["🦥","Demi-journée péninsule de Sơn Trà","Bàn Cờ Peak, langurs douc, plages sauvages"],["🧵","Le 17 : option aller-retour Hội An pour les mesures chez le tailleur"]]},
+{s:D(18),e:D(20),c:"fete",ico:"🎉",t:"Soirées et fête à Đà Nẵng",it:[
+["🍻","Quartier An Thượng"],["🌆","Rooftops, notamment Sky36"],["🏝️","Bars de plage"]]},
+{s:D(21),e:D(21),c:"rep",ico:"🧖",t:"Đà Nẵng : repos et marge",it:[
+["🧖","Repos total : spa et plage"],["🐉","Dragon Bridge","Spectacle feu et eau prévu le samedi 21"]]},
+{s:D(22),e:D(22),c:"ha",ico:"🏮",t:"Hội An : soirée des lanternes",it:[
+["🚕","Aller à Hội An dans la journée"],["🧵","Récupérer les vêtements chez le tailleur si besoin"],["🏨","Nuit du 22 à Hội An","Hôtel à réserver tôt (dimanche des lanternes, forte demande)"],["🚲","Selon énergie et météo : vélo à Trà Quế, bateau-panier à Cẩm Thanh ou temps libre","Ne pas surcharger"],["🏮","Soir : lanternes sur la rivière Thu Bồn et marché de nuit","22 nov = 14e jour lunaire"],["🍲","Cao lầu, bánh mì Phượng, cơm gà"]]},
+{s:D(23),e:D(23),c:"ha",ico:"🛕",t:"Mỹ Sơn : visite allégée, puis retour",it:[
+["🌅","Départ tôt : sunrise tour réservé depuis Hội An","Ouverture vers 6 h"],["🛕","Mỹ Sơn en format allégé","Garder du temps pour récupérer"],["🏖️","Plage An Bàng : optionnelle","À supprimer sans regret si météo, routes ou énergie ne suivent pas"],["🚕","Retour à Đà Nẵng après la visite"]]},
+{s:D(24),e:D(24),c:"rep",ico:"😴",t:"Đà Nẵng : repos et récupération",it:[
+["😴","Repos, plage, spa ou programme très léger"],["🔁","Journée de marge","À remplacer par une activité seulement si météo et énergie le permettent"]]},
+{s:D(25),e:D(30),c:"lib",ico:"🌧️",t:"Liberté et plan B météo",it:[
+["🍳","Cours de cuisine à Hội An"],["🎣","Nam Ô (village de pêcheurs)"],["🛵","Street food tour à moto le soir"],["🏖️","Plage, sorties et shopping"],["⚠️","Tout reste flexible","Selon météo, alertes et fermetures : choisir au dernier moment"]]},
+{s:D(1,11),e:D(1,11),c:"vol",ico:"✈️",t:"Vol retour",it:[["✈️","Vol retour"]]}
+];
+
+const BUDGET=[["Nourriture / cafés","400-600 €"],["Soirées","250-400 €"],["Transports locaux","100-150 €"],["Train Huế + retour col Hải Vân","60-110 €"],["Hôtels Huế + Hội An","50-120 €"],["Mỹ Sơn sunrise + entrées","50-80 €"],["Tailleur","100-300 €"],["Lunettes / vêtements","100-250 €"],["Spa / cuisine / activités","150-250 €"]];
+const CHANGES=["Fusion Hội An + Mỹ Sơn : Mỹ Sơn est à environ 40 min de Hội An, contre 1 h 15 de Đà Nẵng. Prévoir éventuellement le sunrise.","Être à Hội An le soir du 22 nov 2026 pour la soirée des lanternes (14e jour lunaire).","Jours tampons en fin de séjour (pic de saison des pluies et typhons). Garder le 25-30 nov flexible."];
+const CONSEILS=["Réserver le train pour Huế quelques jours avant, via 12Go ou le site de la VNR.","Vérifier météo, horaires et fermetures 1-2 jours avant chaque excursion.","Cù Lao Chàm est souvent fermé en novembre.","Hôtel à Hội An près de la vieille ville, mais pas au bord de la rivière (zone inondable).","Cash en đồng : ATM Vietcombank ou BIDV, carte sans frais.","Français exemptés de visa pour 45 jours."];
+
+const START=D(11),END=D(1,11);
+const key="vn26";
+let st=JSON.parse(localStorage.getItem(key)||'{"done":{}}');
+const save=()=>localStorage.setItem(key,JSON.stringify(st));
+const day0=d=>new Date(d.getFullYear(),d.getMonth(),d.getDate());
+const NOW=day0(new Date());
+const fmt=d=>JOURS[d.getDay()]+" "+d.getDate()+" "+MOIS[d.getMonth()];
+const lbl=x=>x.s.getTime()===x.e.getTime()?fmt(x.s):fmt(x.s)+" → "+fmt(x.e);
+let tab="auj";
+
+function hero(){
+  const j=Math.round((START-NOW)/864e5);
+  let t;
+  if(j>0)t="⏳ Départ dans "+j+" jour"+(j>1?"s":"");
+  else if(NOW<=END)t="✈️ Jour "+(Math.round((NOW-START)/864e5)+1)+" sur 21";
+  else t="🏠 Voyage terminé";
+  document.getElementById("cd").textContent=t;
+  let n=0,tot=0;
+  DAYS.forEach((x,i)=>x.it.forEach((_,k)=>{tot++;if(st.done[i+"-"+k])n++}));
+  document.getElementById("bf").style.width=(tot?n/tot*100:0)+"%";
+  document.getElementById("bl").textContent=n+" / "+tot+" étapes cochées";
+}
+function tabs(){
+  const L=[["auj","📍 Aujourd'hui"],["jours","📅 Par jour"],["info","💶 Budget & conseils"]];
+  const t=document.getElementById("tabs");t.innerHTML="";
+  L.forEach(([k,n])=>{const b=document.createElement("button");b.className="tab"+(tab===k?" on":"");b.textContent=n;b.onclick=()=>{tab=k;render()};t.appendChild(b)});
+}
+function card(x,i,today){
+  const d=document.createElement("div");d.className="day"+(today?" today":"");
+  d.innerHTML='<div class="dh" style="background:'+C[x.c]+'"><span class="ico">'+x.ico+'</span><div><div class="dt">'+lbl(x)+'</div><h2>'+x.t+'</h2></div>'+(today?'<span class="badge">AUJOURD\'HUI</span>':'')+'</div>';
+  const b=document.createElement("div");b.className="db";
+  x.it.forEach((it,k)=>{
+    const id=i+"-"+k;
+    const r=document.createElement("div");r.className="it"+(st.done[id]?" done":"");
+    r.innerHTML='<span class="ti">'+it[0]+'</span><span class="tx">'+it[1]+(it[2]?'<span class="nt">'+it[2]+'</span>':'')+'</span>';
+    const c=document.createElement("input");c.type="checkbox";c.checked=!!st.done[id];
+    c.onchange=()=>{st.done[id]=c.checked;save();render()};
+    r.appendChild(c);b.appendChild(r);
+  });
+  d.appendChild(b);return d;
+}
+function isToday(x){return NOW>=day0(x.s)&&NOW<=day0(x.e)}
+function render(){
+  tabs();hero();
+  const m=document.getElementById("main");m.innerHTML="";
+  if(tab==="auj"){
+    let f=false;
+    DAYS.forEach((x,i)=>{if(isToday(x)){m.appendChild(card(x,i,true));f=true}});
+    if(!f){
+      const b=document.createElement("div");b.className="box";
+      b.innerHTML=NOW<START?"<h3>🌴 Le voyage n'a pas encore commencé</h3><p>Voici la première étape :</p>":"<h3>Voyage terminé 🎉</h3>";
+      m.appendChild(b);
+      if(NOW<START)m.appendChild(card(DAYS[0],0,false));
+    }
+  }
+  if(tab==="jours")DAYS.forEach((x,i)=>m.appendChild(card(x,i,isToday(x))));
+  if(tab==="info"){
+    let h='<div class="box"><h3>🔑 3 changements clés</h3><ul>'+CHANGES.map(x=>"<li>"+x+"</li>").join("")+'</ul></div>';
+    h+='<div class="box"><h3>🚫 Déjà vus / exclus</h3><ul><li>Pas de Ba Na Hills</li><li>Lady Buddha (Linh Ứng) et Marble Mountains déjà visités l\'an dernier</li></ul></div>';
+    h+='<div class="box"><h3>💶 Budget estimatif (3 000 € hors logement Đà Nẵng et vol)</h3><table>'+BUDGET.map(r=>"<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>").join("")+'<tr class="tot"><td>TOTAL</td><td>~1 250-2 250 €</td></tr><tr><td>Marge disponible</td><td>≥ 750 €</td></tr></table></div>';
+    h+='<div class="box warn"><h3>💡 Conseils</h3><ul>'+CONSEILS.map(x=>"<li>"+x+"</li>").join("")+'</ul></div>';
+    m.innerHTML=h;
+    const r=document.createElement("button");r.className="rs";r.textContent="🔄 Tout décocher";
+    r.onclick=()=>{if(confirm("Tout décocher ?")){st.done={};save();render()}};
+    m.appendChild(r);
+  }
+}
+render();
+</script>
+</body>
+</html>
